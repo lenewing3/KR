@@ -1,0 +1,33 @@
+# This is a basic workflow to help you get started with Actions
+
+name: fork sync
+
+# Controls when the workflow will run
+on:
+  # Triggers the workflow on push or pull request events but only for the main branch
+  push:
+    branches:
+      - master
+  schedule:
+    - cron: '0 1/8 * * *'
+    # 每隔12小时
+
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+jobs:
+  fork_sync:
+    # The type of runner that the job will run on
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: TobKed/github-forks-sync-action@master
+        with:
+          github_token: ${{ secrets.PAT }} # 令牌
+          upstream_repository: KingRan/KR  # 上游仓库
+          target_repository: lenewing3/KR  # 你要推送的仓库
+          upstream_branch: main  # 默认是拉取上游仓库的master分支
+          target_branch: master  # 默认推送到你的仓库master分支
+          force: true  # 是否强制推送
+          tags: true  # 确定是否使用-tags
